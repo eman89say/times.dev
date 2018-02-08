@@ -6,20 +6,6 @@ $.ajaxSetup({
 });
 
 
-////////////////////////////////get pages//////////////////////////////////////////////
-
-$('#articles-page').on('click',function(e){
-   e.preventDefault();
-   var url="/dashboard/articles";
-   $.ajax({
-  url: url,
-  success: function(data){
-    console.log(123);
-  },
-  dataType: 'json'
-});
-  
-});
 
 ///////////////////////////////Function upload Image//////////////////////////
 
@@ -37,13 +23,13 @@ function uploadImage(imgName) {
 
         if(jQuery.inArray(image_extension,['gif','png','jpg','jpeg'])== -1){
          
-          $('.submit_error').html(showStaticNotification ("warning","Invalid Image File"));
+          $('#form_output').html(showStaticNotification ("warning","Invalid Image File"));
         }
 
         var image_size= property.size;
         if(image_size > 2000000){
         
-          $('.submit_error').html(showStaticNotification ("warning","Image File Size is very big"));
+          $('#form_output').html(showStaticNotification ("warning","Image File Size is very big"));
 
         }
 

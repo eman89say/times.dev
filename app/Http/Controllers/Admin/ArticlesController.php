@@ -5,11 +5,24 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Article;
+use App\Category;
 use Yajra\DataTables\Facades\Datatables;
 use Validator;
+use App\Helper\Helper;
+use Illuminate\Support\Facades\Auth;
+
 
 class ArticlesController extends Controller
 {
+    
+    private $helperObj;
+
+    public function __construct(Helper $helper){
+       $this->helperObj= $helper;
+       $this->middleware('auth');
+    }
+
+
     public function index()
     {
        return response()
@@ -21,9 +34,16 @@ class ArticlesController extends Controller
        $articles= Article::select('id','title','created_at');
        return DataTables::of($articles)
        ->addColumn('action',function($article){
-        return '<a id="'.$article->id.'" class="edit" href="#" rel="tooltip" title="Edit Article"><i class="material-icons">edit</i></a>
-          <a id="'.$article->id.'" class="delete" href="#" rel="tooltip" title="Delete Article"><i class="material-icons">close</i></a>';
+        return '<a id="'.$article->id.'" class="edit btn btn-primary btn-simple btn-xs" href="#" rel="tooltip" title="Edit Article"><i class="material-icons">edit</i></a>
+          <a id="'.$article->id.'" class="delete btn btn-danger btn-simple btn-xs" href="#" rel="tooltip" title="Delete Article"><i class="material-icons">close</i></a>';
        })
+       ->editColumn('title', function(Article $article) {
+                    return str_limit($article->title, 50, '...');
+       })
+       ->editColumn('created_at', function(Article $article) {
+                    return date('M j,Y', strtotime($article->created_at));
+       })
+       
        ->make(true);
     }
 
@@ -33,7 +53,10 @@ class ArticlesController extends Controller
       $validation = Validator::make($request->all(),[
         'title'=>'required|min:20|max:255',
         'body'=>'required',
+        'cover_image'=>'nullable|mimes:jpeg,bmp,png,jpg|max:1999'
       ]);
+
+
 
       $error_array= array();
       $success_output='';
@@ -46,16 +69,26 @@ class ArticlesController extends Controller
       }
       else
       {
+          $fields=$request->all();      
          if($request->get('button_action')== "insert")
          {
-          $article= Article::create($request->all());
+           $fileNameToStore= $this->helperObj->storeImage($request);
+          $fields['cover_image']=$fileNameToStore;
+          $article= Auth::User()->articles()->create($fields);
           $success_output="New Article Added successfuly";
          }
 
          if($request->get('button_action')== "update")
          {
           $article=Article::find($request->get('article_id'));
-          $article->update($request->all());
+                // handle File upload
+              if($request->hasFile('cover_image')){
+                  $fileNameToStore= $this->helperObj->storeImage($request);
+                  $this->helperObj->deleteImage($article->cover_image);
+                  $fields['cover_image']  = $fileNameToStore;
+              }
+              
+          $article->update($fields);
            $success_output="Article updated successfuly";
 
 
@@ -77,7 +110,10 @@ class ArticlesController extends Controller
       $article= Article::find($id);
       $output= array(
         'title'=>$article->title,
-        'body'=>$article->body
+        'body'=>$article->body,
+        'cover_image'=>$article->cover_image,
+        'category_id'=>$article->category_id
+
       );
       echo json_encode($output);
     }
@@ -88,6 +124,7 @@ class ArticlesController extends Controller
       $article= Article::find($request->input('id'));
       if($article->delete())
       {
+        $this->helperObj->deleteImage($article->cover_image);
         echo "Article Deleted Successfuly";
       }
 

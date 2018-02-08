@@ -36,5 +36,10 @@
 @endsection
 
 @section('scripts')
-  <script type="text/javascript" src="/js/functions/ajax-articles.js"></script>
+<script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+<script src="/vendor/unisharp/laravel-ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript" src="/js/libraries/sweetalert.min.js"></script>
+<script src="/js/libraries/validator.js"></script>
+<script src="/js/libraries/bootstrap-filestyle.min.js"></script>
+<script type="text/javascript" src="/js/functions/ajax-articles.js"></script>
 @endsection
