@@ -19,7 +19,7 @@
                 </a>
             </li>
             <li>
-                <a href="./user.html">
+                <a href="/dashboard/userProfile">
                     <i class="material-icons">person</i>
                     <p>User Profile</p>
                 </a>

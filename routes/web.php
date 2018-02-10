@@ -31,8 +31,15 @@ Route::namespace('Admin')->group(function(){
 
      Route::get('/dashboard/articles/deleteArticle','ArticlesController@deleteArticle');
 
-
      Route::get('/dashboard/categories/getCategories','CategoryController@getCategories');
+
+    Route::get('/dashboard/userProfile','ProfileController@index');
+    Route::post('/dashboard/userProfile','ProfileController@update');
+        Route::post('/dashboard/userProfile/uploadProfileImg','ProfileController@uploadProfileImg');
+
+    
+
+
 
 });
 

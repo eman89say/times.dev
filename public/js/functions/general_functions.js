@@ -22,14 +22,14 @@ function uploadImage(imgName) {
 
 
         if(jQuery.inArray(image_extension,['gif','png','jpg','jpeg'])== -1){
-         
-          $('#form_output').html(showStaticNotification ("warning","Invalid Image File"));
+         //
+          alert("Invalid Image File");
         }
 
         var image_size= property.size;
         if(image_size > 2000000){
-        
-          $('#form_output').html(showStaticNotification ("warning","Image File Size is very big"));
+        //
+          alert("Image File Size is very big");
 
         }
 
