@@ -21,6 +21,7 @@
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key= AIzaSyCEEe7BQMWcH9yYNaMWoBBxFX3yZi9vgjw "></script>
 <!-- Material Dashboard javascript methods -->
 <script src="/js/libraries/material-dashboard.js?v=1.2.0"></script>
+<script type="text/javascript" src="/js/libraries/jquery-ui.min.js"></script>
 
 <script type="text/javascript" src="/js/functions/ajax-routes.js"></script>
 <script type="text/javascript" src="/js/functions/general_functions.js"></script>

@@ -12,11 +12,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-         factory(App\User::class,2)->create()->each(function($user){
+    /*     factory(App\User::class,2)->create()->each(function($user){
          	$user->profile()->save(factory(App\Profile::class)->make());
-         });
+         });*/
 
       //   $this->call(ArticlesTableSeeder::class);
+
+         factory(App\Tag::class,10)->create();
 
 
     }

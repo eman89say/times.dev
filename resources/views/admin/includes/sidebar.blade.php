@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li>
-                <a href="./table.html">
+                <a href="/dashboard/categories">
                     <i class="material-icons">content_paste</i>
                     <p>Categories</p>
                 </a>

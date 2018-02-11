@@ -1,4 +1,6 @@
+
 $(document).ready(function(){
+
    $('#articles_table').DataTable({
        "processing":true,
        "serverSide":true,
@@ -11,10 +13,13 @@ $(document).ready(function(){
        ]
    });
 
+//////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////
    $('#add_article').click(function(){
      
       fetchCategories();
+      fetchTags("#tags");
       $('textarea').ckeditor();
       CKEDITOR.instances['body'].setData('');
       $('#current_image').attr('src','');
@@ -40,9 +45,18 @@ $(document).ready(function(){
          form_data.append('body',$("#body").val());
          form_data.append('button_action',$("#button_action").val());
          form_data.append('article_id',$('#article_id').val());
-        form_data.append('category_id',$("#category_id").val());
+        form_data.append('category_id',$("#category_id").val());     
 
-         
+    
+     var tags = $('#tags').tokenfield('getTokens');
+     var tagId=[];
+     $.each(tags,function(k,v){
+      tagId[k]= v.key;
+     }); 
+  
+
+        form_data.append('tagIds',tagId);
+
 
        $.ajax({
        	 url:"/dashboard/articles/postArticles",
@@ -138,7 +152,7 @@ function swalDelete(id){
 });
 }
 
-
+/////////////////////////////////////////////////////////////////////
 
 function fetchCategories(category_id=null){
 
@@ -160,8 +174,25 @@ function fetchCategories(category_id=null){
                $('#category_id option').attr("selected","selected");
              }       
 
-             })        
+             });        
 
           }
-       })
+       });
 }
+
+///////////////////////////////////////////////////////////////
+
+function fetchTags(tagInputId){
+    $.ajax({
+          url:"/dashboard/tags/getTags",
+          method:'get',
+          dataType:'json',
+          success:function(data)
+          {
+             
+             setTokenfield(data,tagInputId);    
+          }
+       });
+
+}
+

@@ -34,9 +34,12 @@
 					  <img id="current_image" style="width:100%" src="">
 
 					<div class="form-group">
-                          <input type="file" name="cover_image" id="cover_image" class="filestyle" data-buttonBefore="true" data-size="sm" data-placeholder="No file" data-buttonName="btn-primary" data-buttonText="Cover Image" data-icon="false" data-error="Please select image to the article."  >
-                         
+                          <input type="file" name="cover_image" id="cover_image" class="filestyle" data-buttonBefore="true" data-size="sm" data-placeholder="No file" data-buttonName="btn-primary" data-buttonText="Cover Image" data-icon="false" data-error="Please select image to the article."  >                         
                    </div>
+                    <div class="form-group">
+						<label>Tags</label>
+                        <input type="text" class="form-control" id="tags" />
+                    </div>
 				</div>
 				<div class="modal-footer">
 					<input type="hidden" name="article_id" id="article_id" value="">

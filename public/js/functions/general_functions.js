@@ -80,3 +80,27 @@ function showStaticNotification (type,data){
 }
 }
 ///////////////////////////////////////////////////
+function setTokenfield(data,tagInputId)
+{
+  var tagsArray=[];
+     $.each(data,function(k,v){
+      tagsArray[k]= {key:v.id, value: v.name};
+     }); 
+
+ var engine = new Bloodhound({
+  local:tagsArray ,
+  datumTokenizer: function(d) {
+    return Bloodhound.tokenizers.whitespace(d.value);
+  },
+  queryTokenizer: Bloodhound.tokenizers.whitespace
+});
+
+engine.initialize();
+
+$(tagInputId).tokenfield({
+  typeahead: [null, { source: engine.ttAdapter() }]
+});
+}
+
+
+/////////////////////////////////////////////////

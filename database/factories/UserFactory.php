@@ -34,3 +34,10 @@ $factory->define(App\Profile::class, function (Faker $faker) {
 
     ];
 });
+
+$factory->define(App\Tag::class, function (Faker $faker) {
+    return [
+        'name' => $faker->word,
+
+    ];
+});

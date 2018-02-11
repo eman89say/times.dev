@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Article;
 use App\Category;
+use App\Tag;
 use Yajra\DataTables\Facades\Datatables;
 use Validator;
 use App\Helper\Helper;
@@ -17,7 +18,8 @@ class ArticlesController extends Controller
     
     private $helperObj;
 
-    public function __construct(Helper $helper){
+    public function __construct(Helper $helper)
+    {
        $this->helperObj= $helper;
        $this->middleware('auth');
     }
@@ -57,6 +59,8 @@ class ArticlesController extends Controller
       ]);
 
 
+    
+
 
       $error_array= array();
       $success_output='';
@@ -75,6 +79,9 @@ class ArticlesController extends Controller
            $fileNameToStore= $this->helperObj->storeImage($request);
           $fields['cover_image']=$fileNameToStore;
           $article= Auth::User()->articles()->create($fields);
+
+          $article->tags()->attach($fields['tagIds']);
+
           $success_output="New Article Added successfuly";
          }
 
