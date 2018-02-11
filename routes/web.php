@@ -30,6 +30,8 @@ Route::namespace('Admin')->group(function(){
      Route::get('/dashboard/articles/fetchArticle','ArticlesController@fetchArticle');
 
      Route::get('/dashboard/articles/deleteArticle','ArticlesController@deleteArticle');
+          Route::get('/dashboard/articles/deleteMultipleArticles','ArticlesController@deleteMultipleArticles');
+
 
     Route::get('/dashboard/categories','CategoryController@index');
 

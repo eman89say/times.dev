@@ -45,7 +45,8 @@ class ArticlesController extends Controller
        ->editColumn('created_at', function(Article $article) {
                     return date('M j,Y', strtotime($article->created_at));
        })
-       
+       ->addColumn('checkbox','<input type="checkbox" name="customer_checkbox[]" class="customer_checkbox" value="{{$id}}" />')
+       ->rawColumns(['checkbox','action'])
        ->make(true);
     }
 
@@ -135,6 +136,17 @@ class ArticlesController extends Controller
         echo "Article Deleted Successfuly";
       }
 
+    }
+
+
+    public function deleteMultipleArticles(Request $request)
+    {
+       $article_id_array= $request->input('id');
+        $article= Article::whereIn('id',$article_id_array);
+        if($article->delete())
+        {
+            echo "Data Deleted";
+        }
     }
 
 }

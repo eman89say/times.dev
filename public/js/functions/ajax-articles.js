@@ -1,12 +1,14 @@
-
+var tableId = '#articles_table';
+var url= '/dashboard/articles';
 $(document).ready(function(){
 
-   $('#articles_table').DataTable({
+   $(tableId).DataTable({
        "processing":true,
        "serverSide":true,
-       "ajax":"/dashboard/articles/getArticles",
+       "ajax":url+"/getArticles",
        "lengthMenu": [[5, 10, 20, -1], [5, 10, 20, "All"]],
        "columns":[
+            {"data":"checkbox", orderable:false,searchable:false},
             {"data":"title"},
             {"data":"created_at"},
             {"data":"action", orderable:false, searchable:false}
@@ -29,7 +31,7 @@ $(document).ready(function(){
       $('#button_action').val('insert');
       $('#action').val('Add');
    });
-
+////////////////////////////////////////////////////////////////////////////
    $('#article_form').on('submit',function(event){
        event.preventDefault();
       // var form_data= $(this).serialize();
@@ -59,7 +61,7 @@ $(document).ready(function(){
 
 
        $.ajax({
-       	 url:"/dashboard/articles/postArticles",
+       	 url:url+"/postArticles",
        	 method:"POST",
        	 data:form_data,
        	 dataType:"json",
@@ -91,11 +93,11 @@ $(document).ready(function(){
        })
    });
 
-
+/////////////////////////////////////////////////////////////////////////
    $(document).on('click','.edit',function(){
        var id=$(this).attr("id");
        $.ajax({
-       	  url:"/dashboard/articles/fetchArticle",
+       	  url:url+"/fetchArticle",
        	  method:'get',
        	  data:{id:id},
        	  dataType:'json',
@@ -117,40 +119,43 @@ $(document).ready(function(){
        	  }
        })
    });
-
+////////////////////////////////Delete Functions ///////////////////////
 
    $(document).on('click','.delete',function(){
        var id=$(this).attr('id');
-       swalDelete(id);
+       swalDelete(id,url+'/deleteArticle',tableId);
+   });
+//////////////////////////////////////////////////////
+$(document).on('click','#bulk_delete',function(){
+        var id=[];
+      
+           $('input:checked').each(function(){
+                 id.push($(this).val());
+           }); 
+           if(id.length>0)
+           {
+
+            swalDelete(id,url+'/deleteMultipleArticles',tableId);
+          }
+          else
+          {
+            swal("Please select at least one checkbox!", {
+               icon: "warning",
+                });
+          }
+
    });
 
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
 });
 
-function swalDelete(id){
-
-  swal({
-  title: "Are you sure?",
-  text: "It will be deleted permanently!",
-  icon: "warning",
-  buttons: true,
-  dangerMode: true, 
-}).then((willDelete) => {
-  if (willDelete) {
-    $.ajax({
-            url:"/dashboard/articles/deleteArticle",
-            method:"get",
-            data:{id:id},
-            success:function(data)
-            {
-               swal("The Article has been deleted Successfuly!", {
-               icon: "success",
-                });
-              $('#articles_table').DataTable().ajax.reload();
-            }
-        });   
-  } 
-});
-}
 
 /////////////////////////////////////////////////////////////////////
 

@@ -22,6 +22,7 @@
         <div class="card-content table-responsive">
             <table class="table" id="articles_table">
                 <thead class="text-primary">
+                    <th><a id="bulk_delete" name="bulk_delete" class="btn btn-danger btn-simple btn-xs" href="#" rel="tooltip" title="Delete Multiple Articles"><i class="material-icons">close</i></a></th>
                     <th>Title</th>
                     <th>Created_at</th>
                     <th>Action</th>

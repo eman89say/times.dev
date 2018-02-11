@@ -57,7 +57,7 @@ function showNotification (from, align,type, message) {
     });
 }
 
-
+//////////////////////////////////////////////////////////////////////////////
 function showStaticNotification (type,data){
   if(data!=null){
 
@@ -79,7 +79,7 @@ function showStaticNotification (type,data){
     return rows;
 }
 }
-///////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 function setTokenfield(data,tagInputId)
 {
   var tagsArray=[];
@@ -104,3 +104,52 @@ $(tagInputId).tokenfield({
 
 
 /////////////////////////////////////////////////
+
+
+//////////////////////////////////swal Delete Pop message//////////////////////
+function swalDelete(id,url,tableId){
+
+  swal({
+  title: "Are you sure?",
+  text: "It will be deleted permanently!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true, 
+}).then((willDelete) => {
+  if (willDelete) {
+    $.ajax({
+            url:url,
+            method:"get",
+            data:{id:id},
+            success:function(data)
+            {
+               swal("The Data has been deleted Successfuly!", {
+               icon: "success",
+                });
+              $(tableId).DataTable().ajax.reload();
+            }
+        });   
+  } 
+});
+}
+/////////////////////////////Get Data /////////////////////
+
+function getMethod(url,form_data){
+  
+   $.ajax({
+          url:url,
+          method:'get',
+          data:form_data,
+          dataType:'json',
+          success:function(data)
+          {
+            setData(data);
+          }
+        });
+
+
+}
+
+function setData(data){
+  return data;
+}
