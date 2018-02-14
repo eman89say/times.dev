@@ -100,6 +100,14 @@ engine.initialize();
 $(tagInputId).tokenfield({
   typeahead: [null, { source: engine.ttAdapter() }]
 });
+
+$(tagInputId).on('tokenfield:createtoken', function (event) {
+  var existingTokens = $(this).tokenfield('getTokens');
+  $.each(existingTokens, function(index, token) {
+    if (token.value === event.attrs.value)
+      event.preventDefault();
+  });
+});
 }
 
 
@@ -131,25 +139,4 @@ function swalDelete(id,url,tableId){
         });   
   } 
 });
-}
-/////////////////////////////Get Data /////////////////////
-
-function getMethod(url,form_data){
-  
-   $.ajax({
-          url:url,
-          method:'get',
-          data:form_data,
-          dataType:'json',
-          success:function(data)
-          {
-            setData(data);
-          }
-        });
-
-
-}
-
-function setData(data){
-  return data;
 }

@@ -18,18 +18,31 @@ class ArticlesController extends Controller
     
     private $helperObj;
 
+    /*  constructor 
+    *
+    *
+    */
+
     public function __construct(Helper $helper)
     {
        $this->helperObj= $helper;
        $this->middleware('auth');
     }
 
-
+    /*  function index 
+    *   return articles index page
+    *
+    */
     public function index()
     {
        return response()
              ->view('admin.articles.index');
     }
+
+    /* function getArticles
+    *  return datatable of articles
+    *
+    */
 
     public function getArticles()
     {
@@ -51,6 +64,11 @@ class ArticlesController extends Controller
     }
 
 
+    /* function postArticle
+    *  post and update article
+    *
+    */
+
     public function postArticle(Request $request)
     {
       $validation = Validator::make($request->all(),[
@@ -58,9 +76,6 @@ class ArticlesController extends Controller
         'body'=>'required',
         'cover_image'=>'nullable|mimes:jpeg,bmp,png,jpg|max:1999'
       ]);
-
-
-    
 
 
       $error_array= array();
@@ -74,14 +89,17 @@ class ArticlesController extends Controller
       }
       else
       {
-          $fields=$request->all();      
+          $fields=$request->all(); 
+         $tagsData = explode(',', $fields['tagIds']);
+
          if($request->get('button_action')== "insert")
          {
            $fileNameToStore= $this->helperObj->storeImage($request);
           $fields['cover_image']=$fileNameToStore;
           $article= Auth::User()->articles()->create($fields);
 
-          $article->tags()->attach($fields['tagIds']);
+
+          $article->tags()->attach($tagsData);
 
           $success_output="New Article Added successfuly";
          }
@@ -97,6 +115,8 @@ class ArticlesController extends Controller
               }
               
           $article->update($fields);
+                    $article->tags()->sync($tagsData);
+
            $success_output="Article updated successfuly";
 
 
@@ -112,6 +132,11 @@ class ArticlesController extends Controller
     }
 
 
+ /* function fetchArticle
+    *  get article from DB
+    *
+    */
+
     public function fetchArticle(Request $request)
     {
       $id=$request->input('id');
@@ -126,6 +151,11 @@ class ArticlesController extends Controller
       echo json_encode($output);
     }
 
+     /* function deleteArticle
+    *  delete  article from DB
+    *
+    */
+
 
     public function deleteArticle(Request $request)
     {
@@ -139,6 +169,11 @@ class ArticlesController extends Controller
     }
 
 
+     /* function delete multiple Articles
+    *  delete  articles from DB
+    *
+    */
+
     public function deleteMultipleArticles(Request $request)
     {
        $article_id_array= $request->input('id');
@@ -148,5 +183,23 @@ class ArticlesController extends Controller
             echo "Data Deleted";
         }
     }
+
+
+
+    /*
+    *
+    *
+    */
+    function fetchTagsOfthisArticle(Request $request){
+      $user= Article::find($request->get('id'));
+  $Articletags=[];
+  foreach($user->tags as $tag){
+  $Articletags[]= $tag->name;
+  }
+
+              echo json_encode($Articletags);
+
+    }
+
 
 }

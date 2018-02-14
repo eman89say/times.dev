@@ -21,6 +21,7 @@ $(document).ready(function(){
    $('#add_article').click(function(){
      
       fetchCategories();
+       $('#tags').tokenfield('');
       fetchTags("#tags");
       $('textarea').ckeditor();
       CKEDITOR.instances['body'].setData('');
@@ -30,6 +31,7 @@ $(document).ready(function(){
       $('#form_output').html('');
       $('#button_action').val('insert');
       $('#action').val('Add');
+
    });
 ////////////////////////////////////////////////////////////////////////////
    $('#article_form').on('submit',function(event){
@@ -105,6 +107,7 @@ $(document).ready(function(){
        	  {
        	  	var category_id= data.category_id;
             fetchCategories(category_id);
+            fetchTags("#tags");
             $('#title').val(data.title);
        	  	$('#body').val(data.body);
             $('#current_image').attr('src',`/storage/cover_images/${data.cover_image}`);
@@ -201,3 +204,4 @@ function fetchTags(tagInputId){
 
 }
 
+////////////////////////////////////////////////////////
