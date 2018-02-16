@@ -1,5 +1,6 @@
 var tableId = '#articles_table';
 var url= '/dashboard/articles';
+
 $(document).ready(function(){
 
    $(tableId).DataTable({
@@ -80,7 +81,7 @@ $(document).ready(function(){
        	 	else
        	 	{
               $('#articlesModel').modal('hide');
-              showNotification ('top','center','success', data.success);
+              showNotification ('top','right','info', data.success);
               $('#article_form')[0].reset();
               
               CKEDITOR.instances['body'].setData('');

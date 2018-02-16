@@ -6,41 +6,6 @@ $.ajaxSetup({
 });
 
 
-
-///////////////////////////////Function upload Image//////////////////////////
-
-
-function uploadImage(imgName) {
-
-    if(document.getElementById(imgName).files[0] != null){
-
-
-        var property = document.getElementById(imgName).files[0];
-        var image_name= property.name;
-        var image_extension=image_name.split('.').pop().toLowerCase();
-
-
-
-        if(jQuery.inArray(image_extension,['gif','png','jpg','jpeg'])== -1){
-         //
-          alert("Invalid Image File");
-        }
-
-        var image_size= property.size;
-        if(image_size > 2000000){
-        //
-          alert("Image File Size is very big");
-
-        }
-
-        else{
-
-            return property;
-        }
-  }
-
-
-}
 /////////////////////////Notification Functions ///////////////////////////
 function showNotification (from, align,type, message) {
 
@@ -139,4 +104,42 @@ function swalDelete(id,url,tableId){
         });   
   } 
 });
+}
+///////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////Function upload Image//////////////////////////
+
+
+function uploadImage(imgName) {
+
+    if(document.getElementById(imgName).files[0] != null){
+
+
+        var property = document.getElementById(imgName).files[0];
+        var image_name= property.name;
+        var image_extension=image_name.split('.').pop().toLowerCase();
+
+
+
+        if(jQuery.inArray(image_extension,['gif','png','jpg','jpeg'])== -1){
+         //
+           showNotification ('top','right','info', "Invalid Image File");
+
+        }
+
+        var image_size= property.size;
+        if(image_size > 2000000){
+        //
+           showNotification ('top','right','info', "Image File Size is very big");
+
+        }
+
+        else{
+
+            return property;
+        }
+  }
+
+
 }

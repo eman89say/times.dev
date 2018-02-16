@@ -37,7 +37,11 @@ Route::namespace('Admin')->group(function(){
 
      Route::get('/dashboard/articles/checkSlugUnique','ArticlesController@ckeckSlugUnique');
 
+     Route::get('/dashboard/articles/{article_id}','ArticlesController@show');
 
+    
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
     Route::get('/dashboard/categories','CategoryController@index');
 
     Route::post('/dashboard/categories','CategoryController@store');
@@ -45,38 +49,41 @@ Route::namespace('Admin')->group(function(){
     Route::get('/dashboard/categories/show','CategoryController@show');
 
     Route::get('/dashboard/categories/fetchCategories','CategoryController@fetchCategories');
-
-    
     
      Route::get('/dashboard/categories/checkUnique','CategoryController@checkUnique');
 
      Route::get('/dashboard/categories/getCategories','CategoryController@getCategories');
 
 
-     
+  //////////////////////////////////////////////////////////////////////////////////////////////////////   
 
     Route::get('/dashboard/userProfile','ProfileController@index');
+
     Route::post('/dashboard/userProfile','ProfileController@update');
+
     Route::post('/dashboard/userProfile/uploadProfileImg','ProfileController@uploadProfileImg');
 
-    
-     Route::get('/dashboard/tags/getTags','TagController@getTags');
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////   
+    Route::get('/dashboard/tags/getTags','TagController@getTags');
 
-       Route::get('/dashboard/tags','TagController@index');
+    Route::get('/dashboard/tags','TagController@index');
 
     Route::post('/dashboard/tags','TagController@store');
 
     Route::get('/dashboard/tags/show','TagController@show');
 
     Route::get('/dashboard/tags/fetchTags','TagController@fetchTags');
+ 
+    Route::get('/dashboard/tags/checkUnique','TagController@checkUnique');
 
-    
-    
-     Route::get('/dashboard/tags/checkUnique','TagController@checkUnique');
+    Route::get('/dashboard/tags/deleteTag','TagController@deleteTag');
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Route::get('/dashboard/articles/{id}/comments/getComments','CommentsController@getComments');
 
 
-     Route::get('/dashboard/tags/deleteTag','TagController@deleteTag');
+    Route::get('/dashboard/comments/fetchComment','CommentsController@fetchComment');
 
+    Route::get('/dashboard/comments/publish','CommentsController@publish');
 
 });
 

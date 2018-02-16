@@ -72,7 +72,7 @@ $(document).ready(function(){
           }
           else
           {
-              showNotification ('top','right','success', data.success);
+              showNotification ('top','right','info', data.success);
               $('#tag_form')[0].reset();
            $( "#add_tag_card" ).toggle( "slow" );
            $('#output-error').html('');

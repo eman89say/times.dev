@@ -51,7 +51,8 @@ class ArticlesController extends Controller
        $articles= Article::select('id','title','created_at');
        return DataTables::of($articles)
        ->addColumn('action',function($article){
-        return '<a id="'.$article->id.'" class="edit btn btn-primary btn-simple btn-xs" href="#" rel="tooltip" title="Edit Article"><i class="material-icons">edit</i></a>
+        return '<a id="'.$article->id.'" class="view btn btn-primary btn-simple btn-xs" href="/dashboard/articles/'.$article->id.'" rel="tooltip" title="View Article"><i class="material-icons">view_headline</i></a>
+          <a id="'.$article->id.'" class="edit btn btn-primary btn-simple btn-xs" href="#" rel="tooltip" title="Edit Article"><i class="material-icons">edit</i></a>
           <a id="'.$article->id.'" class="delete btn btn-danger btn-simple btn-xs" href="#" rel="tooltip" title="Delete Article"><i class="material-icons">close</i></a>';
        })
        ->editColumn('title', function(Article $article) {
@@ -63,6 +64,17 @@ class ArticlesController extends Controller
        ->addColumn('checkbox','<input type="checkbox" name="customer_checkbox[]" class="article_checkbox" value="{{$id}}" />')
        ->rawColumns(['checkbox','action'])
        ->make(true);
+    }
+
+     /* function show
+    *  get article from DB
+    *
+    */
+
+    public function show($id)
+    {
+          return response()
+             ->view('admin.articles.show',['id'=>$id]);
     }
 
 
@@ -146,12 +158,22 @@ class ArticlesController extends Controller
     {
       $id=$request->input('id');
       $article= Article::find($id);
+
+       $articleTags=[];
+        foreach($article->tags as $tag) 
+        {
+           $articleTags[]= $tag->name;
+        }
       $output= array(
         'title'=>$article->title,
         'slug'=>$article->slug,
         'body'=>$article->body,
         'cover_image'=>$article->cover_image,
-        'category_id'=>$article->category_id
+        'category_id'=>$article->category_id,
+        'tags'=> $articleTags,
+        'user'=> $article->user->name,
+        'category'=>$article->category->name,
+        'date'=>date('M j,Y', strtotime($article->created_at))
 
       );
       echo json_encode($output);

@@ -32,7 +32,7 @@ $(formId).on('submit',function(event){
           }
           else
           {
-           showNotification ('top','right','success', data.success);
+              showNotification ('top','right','info', data.success);
 
            $('#newTitle').text(data.fields.job_title);
            $('#newName').text(data.fields.first_name+ ' '+data.fields.last_name );
@@ -74,7 +74,7 @@ $(document).on('change','#userImage',function(){
                       }
                       else
                       {
-                                 showNotification ('top','right','success', data.success);
+                         showNotification ('top','right','info', data.success);
                       $("img.profileImg").attr('src',`/storage/users_images/${data.profileImg}`);
                      }
                    }
