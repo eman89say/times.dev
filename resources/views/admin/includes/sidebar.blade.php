@@ -37,9 +37,9 @@
                 </a>
             </li>
             <li>
-                <a href="./icons.html">
+                <a href="/dashboard/tags">
                     <i class="material-icons">bubble_chart</i>
-                    <p>Icons</p>
+                    <p>Tags</p>
                 </a>
             </li>
             <li>

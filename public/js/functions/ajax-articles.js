@@ -46,6 +46,7 @@ $(document).ready(function(){
       }
          form_data.append(' _token',$('#article_form').find("input[name='_token']").val());
          form_data.append('title',$("#title").val());
+         form_data.append('slug',$("#slug").val());
          form_data.append('body',$("#body").val());
          form_data.append('button_action',$("#button_action").val());
          form_data.append('article_id',$('#article_id').val());
@@ -109,6 +110,7 @@ $(document).ready(function(){
             fetchCategories(category_id);
             fetchTags("#tags");
             $('#title').val(data.title);
+            $('#slug').val(data.slug);
        	  	$('#body').val(data.body);
             $('#current_image').attr('src',`/storage/cover_images/${data.cover_image}`);
        	  	$('#article_id').val(id);
@@ -150,6 +152,37 @@ $(document).on('click','#bulk_delete',function(){
    });
 
 
+///////////////////////////////////////////////////////////
+$('#slug').keyup(function(e){
+         var form_data={
+                    'slug':$('#slug').val(),
+                    'article_id':$('#article_id').val()
+
+                     };
+
+        $.ajax({
+         url:url+'/checkSlugUnique',
+         method:"get",
+         data:form_data,
+         dataType:"json",
+         
+         success:function(data)
+         {          
+         if(data.error.length>0)
+          {
+              $('#output-error').html(data.error);
+
+          }
+         else
+           {
+              $('#output-error').html('');
+           
+           }
+         }
+
+       });
+   });
+
 
 
 
@@ -168,7 +201,7 @@ function fetchCategories(category_id=null){
      $(this).remove();
       });
   $.ajax({
-          url:"/dashboard/categories/getCategories",
+          url:"/dashboard/categories/fetchCategories",
           method:'get',
           dataType:'json',
           success:function(data)
@@ -192,7 +225,7 @@ function fetchCategories(category_id=null){
 
 function fetchTags(tagInputId){
     $.ajax({
-          url:"/dashboard/tags/getTags",
+          url:"/dashboard/tags/fetchTags",
           method:'get',
           dataType:'json',
           success:function(data)

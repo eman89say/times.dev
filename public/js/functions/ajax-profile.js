@@ -1,6 +1,9 @@
 var url= '/dashboard/userProfile';
 var formId = '#profile_form';
 
+$(document).ready(function(){
+  $('#form_output').html('');
+  $('#img_output').html('');
 
 $(formId).on('submit',function(event){
        event.preventDefault();
@@ -16,20 +19,27 @@ $(formId).on('submit',function(event){
                      };
 
        $.ajax({
-       	 url:url,
-       	 method:"POST",
-       	 data:form_data,
-       	 dataType:"json",
+         url:url,
+         method:"POST",
+         data:form_data,
+         dataType:"json",
          
-       	 success:function(data)
-       	 {      	 	
+         success:function(data)
+         {          
+           if(data.error.length>0)
+          {
+              $('#form_output').html(showStaticNotification ('warning',data.error));
+          }
+          else
+          {
            showNotification ('top','right','success', data.success);
 
            $('#newTitle').text(data.fields.job_title);
            $('#newName').text(data.fields.first_name+ ' '+data.fields.last_name );
            $('#newAbout').text(data.fields.about);
-                
-       	 }
+           $('#form_output').html('');
+           }     
+         }
 
        });
   
@@ -57,11 +67,19 @@ $(document).on('change','#userImage',function(){
                      processData:false,
                     dataType:"json",
                      success:function(data){
+
+                       if(data.error.length>0)
+                      {
+                          showNotification ('top','right','warning', data.error);
+                      }
+                      else
+                      {
                                  showNotification ('top','right','success', data.success);
                       $("img.profileImg").attr('src',`/storage/users_images/${data.profileImg}`);
                      }
+                   }
 
           })
 });
 
-     
+});

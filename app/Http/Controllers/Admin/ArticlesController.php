@@ -11,6 +11,8 @@ use Yajra\DataTables\Facades\Datatables;
 use Validator;
 use App\Helper\Helper;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+
 
 
 class ArticlesController extends Controller
@@ -58,7 +60,7 @@ class ArticlesController extends Controller
        ->editColumn('created_at', function(Article $article) {
                     return date('M j,Y', strtotime($article->created_at));
        })
-       ->addColumn('checkbox','<input type="checkbox" name="customer_checkbox[]" class="customer_checkbox" value="{{$id}}" />')
+       ->addColumn('checkbox','<input type="checkbox" name="customer_checkbox[]" class="article_checkbox" value="{{$id}}" />')
        ->rawColumns(['checkbox','action'])
        ->make(true);
     }
@@ -73,6 +75,7 @@ class ArticlesController extends Controller
     {
       $validation = Validator::make($request->all(),[
         'title'=>'required|min:20|max:255',
+        'slug'=>['required','alpha_dash','min:5','max:255',Rule::unique('articles','slug')->ignore($request->get('article_id'))],
         'body'=>'required',
         'cover_image'=>'nullable|mimes:jpeg,bmp,png,jpg|max:1999'
       ]);
@@ -90,6 +93,7 @@ class ArticlesController extends Controller
       else
       {
           $fields=$request->all(); 
+
          $tagsData = explode(',', $fields['tagIds']);
 
          if($request->get('button_action')== "insert")
@@ -98,9 +102,9 @@ class ArticlesController extends Controller
           $fields['cover_image']=$fileNameToStore;
           $article= Auth::User()->articles()->create($fields);
 
-
-          $article->tags()->attach($tagsData);
-
+              if(count($tagsData)>0){
+               $article->tags()->attach($tagsData);
+               }
           $success_output="New Article Added successfuly";
          }
 
@@ -115,8 +119,9 @@ class ArticlesController extends Controller
               }
               
           $article->update($fields);
+          if(count($tagsData)>0){
                     $article->tags()->sync($tagsData);
-
+                 }
            $success_output="Article updated successfuly";
 
 
@@ -143,6 +148,7 @@ class ArticlesController extends Controller
       $article= Article::find($id);
       $output= array(
         'title'=>$article->title,
+        'slug'=>$article->slug,
         'body'=>$article->body,
         'cover_image'=>$article->cover_image,
         'category_id'=>$article->category_id
@@ -200,6 +206,30 @@ class ArticlesController extends Controller
               echo json_encode($Articletags);
 
     }
+
+
+     function ckeckSlugUnique(Request $request){
+         $validation = Validator::make($request->all(),[
+        'slug'=>['alpha_dash',Rule::unique('articles','slug')->ignore($request->get('article_id'))],
+      ]);
+
+
+      $error_array= array();
+      if($validation->fails())
+      {
+         foreach($validation->messages()->getMessages() as $field_name=>$messages)
+         {
+             $error_array[]= $messages;
+         }
+      }
+
+       $output=array(
+        'error'=>$error_array,
+      );
+
+      echo json_encode($output);
+    }
+
 
 
 }

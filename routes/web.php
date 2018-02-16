@@ -35,12 +35,16 @@ Route::namespace('Admin')->group(function(){
      
      Route::get('/dashboard/articles/fetchTagsOfthisArticle','ArticlesController@fetchTagsOfthisArticle');
 
+     Route::get('/dashboard/articles/checkSlugUnique','ArticlesController@ckeckSlugUnique');
+
 
     Route::get('/dashboard/categories','CategoryController@index');
 
     Route::post('/dashboard/categories','CategoryController@store');
 
     Route::get('/dashboard/categories/show','CategoryController@show');
+
+    Route::get('/dashboard/categories/fetchCategories','CategoryController@fetchCategories');
 
     
     
@@ -58,6 +62,20 @@ Route::namespace('Admin')->group(function(){
     
      Route::get('/dashboard/tags/getTags','TagController@getTags');
 
+       Route::get('/dashboard/tags','TagController@index');
+
+    Route::post('/dashboard/tags','TagController@store');
+
+    Route::get('/dashboard/tags/show','TagController@show');
+
+    Route::get('/dashboard/tags/fetchTags','TagController@fetchTags');
+
+    
+    
+     Route::get('/dashboard/tags/checkUnique','TagController@checkUnique');
+
+
+     Route::get('/dashboard/tags/deleteTag','TagController@deleteTag');
 
 
 });

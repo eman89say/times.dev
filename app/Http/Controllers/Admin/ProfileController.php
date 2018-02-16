@@ -25,29 +25,46 @@ class ProfileController extends Controller
 
 
     public function index(){
-    	$profile= Auth::user()->profile;
-    	//dd($profile);
-    	return response()
+      $profile= Auth::user()->profile;
+      //dd($profile);
+      return response()
              ->view('admin.user_profile.index',['profile'=>$profile]);
     }
 
 
     public function update(Request $request){
 
-    	 $validation = Validator::make($request->all(),[
+       $validation = Validator::make($request->all(),[
        
-        'user_image'=>'nullable|mimes:jpeg,bmp,png,jpg|max:1999'
+        'user_image'=>'nullable|mimes:jpeg,bmp,png,jpg|max:1999',
+        'first_name'=>'required',
+        'last_name'=>'required',
+        'job_title'=>'required'
       ]);
 
-            $fields=$request->all();
-			$profile = Profile::find($request->get('id'));
-			$profile->update($fields);
-            $success_output="Profile Updated successfuly";
+        $error_array= array();
+      $success_output='';
+                  $fields=$request->all();
 
+      if($validation->fails())
+      {
+         foreach($validation->messages()->getMessages() as $field_name=>$messages)
+         {
+             $error_array[]= $messages;
+         }
+      }
+      else
+      {
+
+      $profile = Profile::find($request->get('id'));
+      $profile->update($fields);
+            $success_output="Profile Updated successfuly";
+       }
 
               $output=array( 
-              	'fields'=>$fields,
-              	'success'=>$success_output
+                'fields'=>$fields,
+                 'error'=>$error_array,
+                'success'=>$success_output
               );
 
          echo json_encode($output);
@@ -55,20 +72,40 @@ class ProfileController extends Controller
     }
 
     public function uploadProfileImg(Request $request){
-    	$profile = Profile::find($request->get('id'));
-    	   $fields=$request->all();
+      $validation = Validator::make($request->all(),[
+       
+        'user_image'=>'nullable|mimes:jpeg,bmp,png,jpg|max:1999'
+      ]);
 
-    	if($profile->user_image != 'default-user.png'){
-    		   $this->helperObj->deleteImage($profile->user_image, 'users_images');
-    	}
-    	  $fileNameToStore= $this->helperObj->storeImage($request,'user_image', 'users_images');
+      $error_array= array();
+      $success_output='';
+               $fileNameToStore='';
+
+      if($validation->fails())
+      {
+         foreach($validation->messages()->getMessages() as $field_name=>$messages)
+         {
+             $error_array[]= $messages;
+         }
+      }
+      else
+      {
+      $profile = Profile::find($request->get('id'));
+         $fields=$request->all();
+
+      if($profile->user_image != 'default-user.png'){
+           $this->helperObj->deleteImage($profile->user_image, 'users_images');
+      }
+        $fileNameToStore= $this->helperObj->storeImage($request,'user_image', 'users_images');
           $fields['user_image']=$fileNameToStore;
           $profile->update($fields);
           $success_output="New Profile Image Added successfuly";
-
+      }
           $output=array( 
-              	'profileImg'=>$fileNameToStore,
-              	'success'=>$success_output
+                'profileImg'=>$fileNameToStore,
+                'success'=>$success_output,
+                 'error'=>$error_array,
+
               );
 
          echo json_encode($output);

@@ -1,29 +1,29 @@
-var url= '/dashboard/categories';
-var tableId= '#categories_table';
+var url= '/dashboard/tags';
+var tableId= '#tags_table';
 
 $(document).ready(function(){
-   getCategories();
+   getTags();
 
-
-  $( "#add_category" ).click(function() {
-       $( "#add_category_card" ).show( "slow" );
-       $('#category_form')[0].reset();
+///////////////////////////////////////////////////////////////
+  $( "#add_tag" ).click(function() {
+       $( "#add_tag_card" ).show( "slow" );
+       $('#tag_form')[0].reset();
        $('#form_output').html('');
          $('#button_action').val('insert');
          $('#action').val('Add');
-        $('#card-title').text('Add New Category');
+        $('#card-title').text('Add New Tag');
 
   });
-
+////////////////////////////////////////////////////////////////
   $('#cancel').click(function(){
-       $( "#add_category_card" ).hide( "slow" );
+       $( "#add_tag_card" ).hide( "slow" );
 
   })
-
+/////////////////////////////////////////////////////////////////////
      $(document).on('click','.edit',function(){
        var id=$(this).attr("id");
           $.ajax({
-          url:"/dashboard/categories/show",
+          url:"/dashboard/tags/show",
           method:'get',
           data:{id:id},
           dataType:'json',
@@ -31,12 +31,12 @@ $(document).ready(function(){
           {
             var id= data.id;
             $('#name').val(data.name);
-            $( "#add_category_card" ).show( "slow" );
+            $( "#add_tag_card" ).show( "slow" );
           $('#form_output').html('');
             $('#button_action').val('update');
             $('#action').val('Edit');
-            $('#card-title').text('Edit Category Name');
-            $('#category_id').val(id);
+            $('#card-title').text('Edit Tag Name');
+            $('#tag_id').val(id);
 
           }
        });
@@ -45,16 +45,16 @@ $(document).ready(function(){
           
     }); 
 
-
-   $('#category_form').on('submit',function(event){
+///////////////////////////////////////////////////////////////
+   $('#tag_form').on('submit',function(event){
        event.preventDefault();
        var button_action = $("#button_action").val();
-       var id= $('input#category_id').val();
+       var id= $('input#tag_id').val();
 
          var form_data={
-                    ' _token':$("#category_form").find("input[name='_token']").val(),
+                    ' _token':$("#tag_form").find("input[name='_token']").val(),
                     'name':$('#name').val(),
-                    'id':$('input#category_id').val(),
+                    'id':$('input#tag_id').val(),
                     'button_action':button_action
                      };
 
@@ -73,8 +73,8 @@ $(document).ready(function(){
           else
           {
               showNotification ('top','right','success', data.success);
-              $('#category_form')[0].reset();
-           $( "#add_category_card" ).toggle( "slow" );
+              $('#tag_form')[0].reset();
+           $( "#add_tag_card" ).toggle( "slow" );
            $('#output-error').html('');
            $(tableId).DataTable().ajax.reload();
 
@@ -88,11 +88,11 @@ $(document).ready(function(){
 
    });
 
-
+/////////////////////////////////////////////////////////////////////////
    $('#name').keyup(function(e){
          var form_data={
                     'name':$('#name').val(),
-                     'id':$('input#category_id').val(),
+                     'id':$('input#tag_id').val(),
                      };
 
         $.ajax({
@@ -117,19 +117,23 @@ $(document).ready(function(){
 
        });
    });
+//////////////////////////////////////////////////////////////////////////
+$(document).on('click','.delete',function(){
+       var id=$(this).attr('id');
+       swalDelete(id,url+'/deleteTag',tableId);
+   });
 
-
-  
+/////////////////////////////////////////////////////////////////////////////////////  
 
 });
 
+/////////////////////////////////////////////////////////////////////////
 
-
-function getCategories(){
+function getTags(){
    $(tableId).DataTable({
        "processing":true,
        "serverSide":true,
-       "ajax":url+"/getCategories",
+       "ajax":url+"/getTags",
        "lengthMenu": [[10, 20, -1], [10, 20, "All"]],
        "columns":[
             {"data":"name"},

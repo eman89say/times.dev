@@ -15,6 +15,11 @@
 						<input type="text" name="title" id="title" class="form-control" data-error="Please enter article title."  required>
 						<div class="help-block with-errors"></div>
 					</div>
+					<div class="form-group">
+						<label>URL Slug</label>
+						<input type="text" name="slug" id="slug" class="form-control" data-error="Please enter article slug." data-minlength="5" pattern="[a-zA-Z-_]+" maxlength="255" required>
+						<div id="output-error" class="help-block with-errors"></div>
+					</div>
 					<div class="row">
 	                  <div class="col-md-4">
 	                   <div class="form-group">

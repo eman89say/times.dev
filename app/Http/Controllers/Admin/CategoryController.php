@@ -6,30 +6,51 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Category;
 use Validator;
+use Yajra\DataTables\Facades\Datatables;
+use Illuminate\Validation\Rule;
+
+
 class CategoryController extends Controller
 {
     
     public function index()
     {
-    	  $categories= Category::all();
 
-    	  return response()->view('admin.categories.index',['categories'=>$categories]);
+        return response()->view('admin.categories.index');
 
     }
 
 
     public function getCategories()
     {
-         $categories= Category::all();
 
+
+         $categories= Category::select('id','name','created_at');
+       return DataTables::of($categories)
+       ->addColumn('action',function($category){
+        return '<a id="'.$category->id.'" class="edit btn btn-primary btn-simple btn-xs" href="#" rel="tooltip" title="Edit category name"><i class="material-icons">edit</i></a>
+          ';
+       })
+       ->editColumn('created_at', function(Category $category) {
+                    return date('M j,Y', strtotime($category->created_at));
+       })
+       ->make(true);
+    }
+
+
+     public function fetchCategories()
+    {
+         $categories= Category::all();
          return response($categories);
     }
+
 
 
     public function store(Request $request)
     {
          $validation = Validator::make($request->all(),[
-             'name'=> 'required|min:3|max:255|unique:categories,name'
+         'name'=>['required','min:3','max:255',Rule::unique('categories','name')->ignore($request->get('id'))],
+
       ]);
 
 
@@ -48,7 +69,7 @@ class CategoryController extends Controller
           $fields=$request->all();      
          if($request->get('button_action')== "insert")
          {  
-      	  $category= Category::create($fields);
+          $category= Category::create($fields);
           $success_output="New Category Added successfuly";
          }
           if($request->get('button_action')== "update")
@@ -73,8 +94,8 @@ class CategoryController extends Controller
 
 
     public function checkUnique(Request $request){
-    	 $validation = Validator::make($request->all(),[
-             'name'=> 'unique:categories,name'
+       $validation = Validator::make($request->all(),[
+         'name'=>Rule::unique('categories','name')->ignore($request->get('id')),
       ]);
 
 
@@ -97,7 +118,7 @@ class CategoryController extends Controller
 
     public function show(Request $request)
     {
-    	 $id=$request->input('id');
+       $id=$request->input('id');
       $category= Category::find($id);
       $output= array(
         'name'=>$category->name,
