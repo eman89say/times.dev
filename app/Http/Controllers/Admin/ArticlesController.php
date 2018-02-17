@@ -190,6 +190,7 @@ class ArticlesController extends Controller
       $article= Article::find($request->input('id'));
       if($article->delete())
       {
+        $article->comments()->delete();
         $this->helperObj->deleteImage($article->cover_image);
         echo "Article Deleted Successfuly";
       }

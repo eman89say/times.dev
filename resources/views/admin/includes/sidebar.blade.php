@@ -1,4 +1,4 @@
-@auth
+@if(auth()->user()->verified())
 <div class="sidebar" data-color="purple" data-image="/img/sidebar-1.jpg">
             <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
@@ -64,4 +64,4 @@
     </div>
 </div>
 
-@endauth       
+@endif       

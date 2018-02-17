@@ -21,6 +21,8 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
 
 Route::namespace('Admin')->group(function(){
+    Route::get('/verify/{token}','VerifyController@verify')->name('verify');
+
      Route::get('/dashboard/articles','ArticlesController@index');
 
      Route::get('/dashboard/articles/getArticles','ArticlesController@getArticles');
