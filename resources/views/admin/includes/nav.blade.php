@@ -17,23 +17,24 @@
                                     <p class="hidden-lg hidden-md">Dashboard</p>
                                 </a>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown" id="markAsRead">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">notifications</i>
-                                    <span class="notification">{{count(auth()->user()->unreadNotifications)}}</span>
+                                    <span class="notification" id="notification">{{count(auth()->user()->unreadNotifications)}}</span>
                                     <p class="hidden-lg hidden-md">Notifications</p>
                                 </a>
-                                <ul class="dropdown-menu">
-                                    @foreach(auth()->user()->unreadNotifications as $notification)
-                                    <li class="markAsRead" id="{{$notification->id}}">
-                                        <input type="hidden" id="article_id" name="article_id" value="{{$notification->data['article_id']}}">
-                                        <a href="#" >Someone commented on your article <strong>{{$notification->data['article_title']}} </strong>
-                                            <br/><small>{{date('D, d M Y H:i ', strtotime($notification->created_at))}} </small>                                            
+                                <ul class="dropdown-menu" >
+                                    @forelse(auth()->user()->unreadNotifications as $notification)
+                                    <li >
+                                        <a href="/dashboard/articles/{{$notification->data['article_id']}}" id="getArticle">Someone commented on your article <strong>{{ str_limit($notification->data['article_title'], 15, '...')}} </strong>
+                                            <br/><small>@datetime($notification->created_at) </small>                                            
                                             </a>
                                     </li>
                                     <hr>
-                                    @endforeach
-                                    <a href="" class="btn btn-block btn-default btn-sm">See All</a> 
+                                    @empty
+                                         <li><a>  No Unread Notifications  </a></li>
+                                    @endforelse
+                                      <a href="/dashboard/notifications" class="btn btn-block btn-primary btn-sm">See All</a> 
                                 </ul>
                             </li>
                             <li class="dropdown">

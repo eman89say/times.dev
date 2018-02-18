@@ -33,7 +33,7 @@ class CommentsController extends Controller
       {
           $fields=$request->all();
           $article= Article::find($request->get('article_id'));
-           $article_title= str_limit($article->title, 15, '...');
+           $article_title= $article->title;
 
           $user = $article->user; 
  

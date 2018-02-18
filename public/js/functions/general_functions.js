@@ -7,14 +7,27 @@ $.ajaxSetup({
 
 ////////////////////////////////Navbar notification ////////////////////////////////////////////
 
-$('.markAsRead').click(function(e){
-   e.preventDefault();
-   var notification_id = $(this).attr('id');
-   console.log(notification_id);
-   markNotificationAsRead(notification_id);
-   var article_id= $('input#article_id').val();
-   console.log(article_id);
+$('#markAsRead').click(function(e){
+  // console.log(123);
+    var notfic_count = $('#notification').text();
+     if( notfic_count !== '0'){
+       $.ajax({
+          url:"/dashboard/notifications/markAsRead",
+          method:'get',
+          dataType:'json',
+          success:function(data)
+          {
+            
+           $('#notification').text(data);
+          }
+       });
+
+     }
+
+
 });
+////////////////////////////////////////////////////////////////////
+
 
 ///////////////////////////////////////////////////////////////////////
 

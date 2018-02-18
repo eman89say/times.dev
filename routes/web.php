@@ -87,6 +87,11 @@ Route::namespace('Admin')->group(function(){
 
     Route::get('/dashboard/comments/publish','CommentsController@publish');
 
+    Route::get('/dashboard/notifications','NotificationsController@index');
+
+
+    Route::get('/dashboard/notifications/markAsRead','NotificationsController@markAsRead');
+
 });
 
 

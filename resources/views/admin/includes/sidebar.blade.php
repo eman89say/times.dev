@@ -42,16 +42,17 @@
                     <p>Tags</p>
                 </a>
             </li>
+           
             <li>
+                <a href="/dashboard/notifications">
+                    <i class="material-icons text-gray">notifications</i>
+                    <p>Notifications</p>
+                </a>
+            </li>
+             <li>
                 <a href="./maps.html">
                     <i class="material-icons">location_on</i>
                     <p>Maps</p>
-                </a>
-            </li>
-            <li>
-                <a href="./notifications.html">
-                    <i class="material-icons text-gray">notifications</i>
-                    <p>Notifications</p>
                 </a>
             </li>
             <li class="active-pro">
