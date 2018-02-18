@@ -25,4 +25,9 @@ class Article extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+       public function scopeBySlug($query,$slug)
+    {
+        return $query->where('slug','=',$slug);
+    }
 }

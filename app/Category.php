@@ -13,4 +13,9 @@ class Category extends Model
     {
     	return $this->hasMany(Article::class);
     }
+
+    public function scopeCatName($query,$name)
+    {
+        return $query->where('name','=',$name);
+    }
 }

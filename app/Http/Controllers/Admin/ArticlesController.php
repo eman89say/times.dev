@@ -9,9 +9,9 @@ use App\Category;
 use App\Tag;
 use Yajra\DataTables\Facades\Datatables;
 use Validator;
+use Illuminate\Validation\Rule;
 use App\Helper\Helper;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 
 

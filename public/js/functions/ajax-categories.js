@@ -3,7 +3,7 @@ var tableId= '#categories_table';
 
 $(document).ready(function(){
    getCategories();
-
+//////////////////////////////////////////////////////////////////////////////////
 
   $( "#add_category" ).click(function() {
        $( "#add_category_card" ).show( "slow" );
@@ -14,12 +14,12 @@ $(document).ready(function(){
         $('#card-title').text('Add New Category');
 
   });
-
+/////////////////////////////////////////////////////////////////////////////////////
   $('#cancel').click(function(){
        $( "#add_category_card" ).hide( "slow" );
 
   })
-
+//////////////////////////////////////////////////////////////////////////////////////
      $(document).on('click','.edit',function(){
        var id=$(this).attr("id");
           $.ajax({
@@ -45,7 +45,7 @@ $(document).ready(function(){
           
     }); 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
    $('#category_form').on('submit',function(event){
        event.preventDefault();
        var button_action = $("#button_action").val();
@@ -88,7 +88,7 @@ $(document).ready(function(){
 
    });
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////
    $('#name').keyup(function(e){
          var form_data={
                     'name':$('#name').val(),
@@ -124,7 +124,7 @@ $(document).ready(function(){
 });
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 function getCategories(){
    $(tableId).DataTable({
        "processing":true,

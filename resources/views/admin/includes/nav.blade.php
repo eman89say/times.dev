@@ -20,25 +20,20 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="material-icons">notifications</i>
-                                    <span class="notification">5</span>
+                                    <span class="notification">{{count(auth()->user()->unreadNotifications)}}</span>
                                     <p class="hidden-lg hidden-md">Notifications</p>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#">Mike John responded to your email</a>
+                                    @foreach(auth()->user()->unreadNotifications as $notification)
+                                    <li class="markAsRead" id="{{$notification->id}}">
+                                        <input type="hidden" id="article_id" name="article_id" value="{{$notification->data['article_id']}}">
+                                        <a href="#" >Someone commented on your article <strong>{{$notification->data['article_title']}} </strong>
+                                            <br/><small>{{date('D, d M Y H:i ', strtotime($notification->created_at))}} </small>                                            
+                                            </a>
                                     </li>
-                                    <li>
-                                        <a href="#">You have 5 new tasks</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">You're now friend with Andrew</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Another Notification</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Another One</a>
-                                    </li>
+                                    <hr>
+                                    @endforeach
+                                    <a href="" class="btn btn-block btn-default btn-sm">See All</a> 
                                 </ul>
                             </li>
                             <li class="dropdown">

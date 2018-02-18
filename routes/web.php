@@ -90,4 +90,17 @@ Route::namespace('Admin')->group(function(){
 });
 
 
- 
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Route::namespace('Website')->group(function(){
+     Route::get('/articles','ArticlesController@index');
+
+     Route::get('/articles/{name}/{slug}','ArticlesController@getArticle')->where('slug', '[A-Za-z-_]+')->name('articles.article');
+
+     Route::post('/article/comments','CommentsController@postComment');
+
+
+
+
+
+});
