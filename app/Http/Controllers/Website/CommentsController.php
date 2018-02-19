@@ -22,6 +22,7 @@ class CommentsController extends Controller
 
       $error_array= array();
       $success_output='';
+      $comment= new Comment();
       if($validation->fails())
       {
          foreach($validation->messages()->getMessages() as $field_name=>$messages)
@@ -48,9 +49,33 @@ class CommentsController extends Controller
        $output=array(
         'error'=>$error_array,
         'success'=>$success_output,
-        'user'=>$user
+        'comment'=>$comment
       );
 
       echo json_encode($output);
 }
+
+
+   public function getComment(Request $request)
+   {
+     $comments = Comment::where('article_id', $request->get('article_id'))
+                ->orderBy('name', 'desc')
+               ->take($request->get('limit'))
+               ->offset($request->get('start'))
+               ->get();
+
+     return response($comments);   
+
+
+   }
+
+
+   public function getCommentCount(Request $request)
+   {
+     $commentsCount = Comment::where('article_id', $request->get('article_id'))->count();
+     return response($commentsCount);
+   }
+
+
+
 }

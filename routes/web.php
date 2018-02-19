@@ -104,7 +104,9 @@ Route::namespace('Website')->group(function(){
 
      Route::post('/article/comments','CommentsController@postComment');
 
+     Route::get('/article/comments/getComments','CommentsController@getComment');
 
+         Route::get('/article/comments/getCommentCount','CommentsController@getCommentCount');
 
 
 

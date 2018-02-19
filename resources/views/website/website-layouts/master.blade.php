@@ -10,7 +10,8 @@
    @include('website.includes.nav')
     <!-- End Navbar -->
     <div class="wrapper">
-       
+               @include('website.includes.subpage-header')
+
         <div class="section section-team text-center">
             <div class="container">
                <div class="row">
@@ -33,3 +34,4 @@
      @include('website.includes.javascript')
 
 </html>
+

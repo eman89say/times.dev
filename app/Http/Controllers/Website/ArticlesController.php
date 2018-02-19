@@ -11,7 +11,7 @@ class ArticlesController extends Controller
 {
     public function index()
     {
-    	return view('website.articles.index');
+    	//return view('website.articles.index');
      }
 
       public function getArticle($name,$slug){
